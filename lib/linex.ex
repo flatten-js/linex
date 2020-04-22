@@ -26,7 +26,7 @@ defmodule Linex do
   Create a new maintained bubble container
   """
 
-  def new(blocks, alt, {:bubble, opt}) do
+  def new(blocks, alt, :bubble, opt \\ []) do
     bubble(blocks, opt)
     |> flex(alt)
     |> map_filter()
@@ -52,7 +52,7 @@ defmodule Linex do
   A container that makes up one message bubble
   """
 
-  def bubble(blocks, opt) do
+  def bubble(blocks, opt \\ []) do
     %{
       type: "bubble",
       header: blocks[:header],
@@ -79,11 +79,13 @@ defmodule Linex do
   The component that defines the layout of the component
   """
 
-  def box(contents, {:vertical, opt}) do
+  def box(contents, layout, opt \\ [])
+
+  def box(contents, :vertical, opt) do
     contents |> template_box("vertical", opt)
   end
 
-  def box(contents, {:horizontal, opt}) do
+  def box(contents, :horizontal, opt) do
     contents |> template_box("horizontal", opt)
   end
 
@@ -104,7 +106,7 @@ defmodule Linex do
   The component that draws the image
   """
 
-  def image(url, opt) do
+  def image(url, opt \\ []) do
     %{
       type: "image",
       url: url,
@@ -118,7 +120,9 @@ defmodule Linex do
   The component that draws a string of one line
   """
 
-  def text(contents, {:span, opt}) do
+  def text(params, opt \\ [])
+
+  def text(contents, opt) when is_list contents do
     template_text(opt)
     |> Map.put(:contents, contents)
   end
@@ -141,7 +145,7 @@ defmodule Linex do
   with different designs in one line
   """
 
-  def span(text, opt) do
+  def span(text, opt \\ []) do
     %{type: "span", text: text}
     |> Map.merge(span_opt opt)
   end
